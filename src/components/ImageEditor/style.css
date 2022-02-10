@@ -1,0 +1,20 @@
+.tui-image-editor-controls-logo, .tui-image-editor-help-menu, .tui-image-editor-header, .tui-image-editor-controls-buttons, .tui-image-editor-menu, .tui-image-editor-controls {
+  display: none !important;
+  color: red !important;
+}
+
+.tui-image-editor-container, .tui-image-editor-main-container, .tui-image-editor-main, .tui-image-editor-wrap {
+  min-height: 0px !important;
+  top: 0px !important;
+  bottom: 0px !important;
+  overflow-x: hidden !important;
+}
+
+.tui-image-editor-container, .tui-image-editor {
+  display: unset !important;
+}
+
+.tui-image-editor-canvas-container, .lower-canvas, .upper-canvas {
+  width: 128px !important;
+  height: 128px !important;
+}
