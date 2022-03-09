@@ -1,0 +1,92 @@
+INFO: Generating tree for: src/**/*.*
+INFO: File renamed: state/application/hooks.ts -> state-application-hooks.ts
+INFO: File renamed: components/Modal/Header.tsx -> components-Modal-Header.tsx
+src
+├──_app
+│  ├──globals
+│  │  └──variables.css
+│  └──globals.css
+├──Button
+│  ├──Dots
+│  │  ├──functions
+│  │  │  ├──array
+│  │  │  │  └──chunkArray.ts
+│  │  │  ├──array.ts
+│  │  │  ├──retry.ts
+│  │  │  └──styling.ts
+│  │  └──functions.ts
+│  ├──Dots.tsx
+│  └──Loader.tsx
+├──Header
+│  ├──Container.tsx
+│  └──NavigationItem.tsx
+├──hooks
+│  ├──state
+│  │  ├──reducer
+│  │  │  ├──reducer.test.ts
+│  │  │  └──reducer.ts
+│  │  └──reducer.ts
+│  └──state.ts
+├──IconSelector
+│  ├──IconMakerModal
+│  │  ├──BackgroundMaker.tsx
+│  │  └──PresetBackgrounds.tsx
+│  └──IconMakerModal.tsx
+├──ImageEditor
+│  └──ImageEditor.tsx
+├──Input
+│  └──Address.tsx
+├──QuestionHelper
+│  ├──Tooltip
+│  │  └──Popover.tsx
+│  └──Tooltip.tsx
+├──shared
+│  └──actions.ts
+├──web3
+│  ├──hooks
+│  │  └──useActiveWeb3React.ts
+│  └──hooks.ts
+├──_app.tsx
+├──Action.tsx
+├──actions.ts
+├──Actions.tsx
+├──Body.tsx
+├──Button.tsx
+├──Card.tsx
+├──Checkbox.tsx
+├──components-Modal-Header.tsx
+├──constants.ts
+├──Content.tsx
+├──defaultTokenList.tsx
+├──ERC20.json
+├──Error.tsx
+├──getImageResolution.ts
+├──Header.tsx
+├──HeadlessUIModal.tsx
+├──hooks.ts
+├──IconSelector.tsx
+├──ImageEditor.tsx
+├──Input.tsx
+├──Layout.tsx
+├──NetworkModal.tsx
+├──networks.ts
+├──pages.tsx
+├──Portals.tsx
+├──QuestionHelper.tsx
+├──state-application-hooks.ts
+├──style.css
+├──submitToken.ts
+├──toBase64.ts
+├──token-lists.ts
+├──tokenData.ts
+├──TokenDetails.tsx
+├──updater.ts
+├──useDebounce.ts
+├──useInterval.ts
+├──useIsWindowVisible.ts
+├──useOnClickOutside.ts
+├──useToggle.ts
+├──useTokenData.ts
+├──web3.ts
+├──Web3Network.tsx
+└──web3React.ts
