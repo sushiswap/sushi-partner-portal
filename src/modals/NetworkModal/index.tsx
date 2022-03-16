@@ -2,7 +2,6 @@ import { ChainId } from "@sushiswap/core-sdk";
 import HeadlessUiModal from "app/components/Modal/HeadlessUIModal";
 import { NETWORK_ICON, NETWORK_LABEL } from "app/config/networks";
 import { classNames } from "app/functions";
-import { useActiveWeb3React } from "app/services/web3";
 import { ApplicationModal } from "app/state/application/actions";
 import {
   useModalOpen,
@@ -11,7 +10,7 @@ import {
 // @ts-ignore TYPE NEEDS FIXING
 import cookie from "cookie-cutter";
 import Image from "next/image";
-import React, { FC } from "react";
+import React from "react";
 
 export const SUPPORTED_NETWORKS: {
   [chainId in ChainId]?: {

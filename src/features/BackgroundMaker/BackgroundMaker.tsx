@@ -1,4 +1,4 @@
-import { createRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HuePicker } from "react-color";
 import { useFormContext } from "react-hook-form";
 

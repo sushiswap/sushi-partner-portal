@@ -1,21 +1,21 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { ChainId } from "@sushiswap/core-sdk";
+import Button from "app/components/Button";
+import Container from "app/components/Container";
+import Form from "app/components/Form";
+import ImageEditor from "app/components/ImageEditor";
+import Loader from "app/components/Loader";
+import Typography from "app/components/Typography";
 import Web3Network from "app/components/Web3Network";
+import BackgroundImageMakerField from "app/features/BackgroundMaker/BackgroundMakerField";
+import UploadImageField from "app/features/UploadImageField";
+import { classNames } from "app/functions";
+import { addressValidator } from "app/functions/validators";
+import useTokenData from "app/hooks/useTokenData";
 import NetworkModal from "app/modals/NetworkModal";
 import React, { useState } from "react";
-import useTokenData from "app/hooks/useTokenData";
-import Button from "app/components/Button";
-import Form from "app/components/Form";
 import { useForm } from "react-hook-form";
-import Container from "app/components/Container";
-import Typography from "app/components/Typography";
-import Loader from "app/components/Loader";
-import UploadImageField from "app/features/UploadImageField";
 import * as yup from "yup";
-import { addressValidator } from "app/functions/validators";
-import { yupResolver } from "@hookform/resolvers/yup";
-import ImageEditor from "app/components/ImageEditor";
-import BackgroundImageMakerField from "app/features/BackgroundMaker/BackgroundMakerField";
-import { classNames } from "app/functions";
 
 enum SubmitState {
   Nothing = "nothing",

@@ -1,9 +1,9 @@
+import { createAppAuth } from "@octokit/auth-app";
 import { ChainId, ChainKey } from "@sushiswap/core-sdk";
 import { TokenData } from "app/hooks/useTokenData";
+import { ethers } from "ethers";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Octokit } from "octokit";
-import { createAppAuth } from "@octokit/auth-app";
-import { ethers } from "ethers";
 
 interface Body {
   tokenAddress: string;

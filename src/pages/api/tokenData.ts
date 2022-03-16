@@ -1,10 +1,9 @@
 import { isAddress } from "@ethersproject/address";
+import { ChainId } from "@sushiswap/core-sdk";
+import ERC20_ABI from "app/constants/abis/ERC20.json";
+import { SUPPORTED_NETWORKS } from "app/modals/NetworkModal";
 import { ethers } from "ethers";
 import type { NextApiRequest, NextApiResponse } from "next";
-
-import ERC20_ABI from "app/constants/abis/ERC20.json";
-import { ChainId } from "@sushiswap/core-sdk";
-import { SUPPORTED_NETWORKS } from "app/modals/NetworkModal";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const address = req.query.address as string;

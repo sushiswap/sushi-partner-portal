@@ -1,8 +1,8 @@
+import Typography from "app/components/Typography";
 import Image from "next/image";
 import React from "react";
+
 import Container from "../Container";
-import { NavigationItem } from "./NavigationItem";
-import Typography from "app/components/Typography";
 
 export const HEADER_HEIGHT = 64;
 

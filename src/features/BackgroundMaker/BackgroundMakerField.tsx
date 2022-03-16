@@ -1,7 +1,8 @@
-import React, { FC, useCallback } from "react";
 import Form from "app/components/Form";
 import Typography from "app/components/Typography";
+import React, { FC, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
+
 import BackgroundMaker from "./BackgroundMaker";
 
 interface BackgroundImageMakerField {

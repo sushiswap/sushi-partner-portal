@@ -1,9 +1,9 @@
+import { ChainId } from "@sushiswap/core-sdk";
+import Typography from "app/components/Typography";
 import { NETWORK_ICON, NETWORK_LABEL } from "app/config/networks";
 import { useNetworkModalToggle } from "app/state/application/hooks";
 import Image from "next/image";
 import React, { FC } from "react";
-import Typography from "app/components/Typography";
-import { ChainId } from "@sushiswap/core-sdk";
 
 interface Web3Network {
   chainId: ChainId;

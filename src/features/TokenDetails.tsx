@@ -1,7 +1,7 @@
+import Loader from "app/components/Loader";
+import Typography from "app/components/Typography";
 import { TokenData } from "app/hooks/useTokenData";
 import { FC } from "react";
-import Typography from "app/components/Typography";
-import Loader from "app/components/Loader";
 
 const ITEMS = [
   ["Symbol", "symbol"],
