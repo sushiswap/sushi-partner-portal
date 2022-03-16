@@ -11,6 +11,7 @@
     "@fontsource/dm-sans": "^4.5.0",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
+    "@hookform/resolvers": "^2.8.5",
     "@octokit/auth-app": "^3.6.1",
     "@popperjs/core": "^2.11.2",
     "@reduxjs/toolkit": "^1.7.1",
@@ -28,7 +29,7 @@
     "react": "17.0.2",
     "react-color": "^2.19.3",
     "react-dom": "^17.0.2",
-    "react-dropzone": "^11.5.1",
+    "react-dropzone": "^12.0.4",
     "react-image-file-resizer": "^0.4.7",
     "react-popper": "^2.2.5",
     "react-redux": "^7.2.6",
@@ -36,7 +37,8 @@
     "recoil": "^0.6.1",
     "redux-persist": "^6.0.0",
     "swr": "^1.2.0",
-    "tailwindcss-border-gradient-radius": "^2.0.0"
+    "tailwindcss-border-gradient-radius": "^2.0.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/node": "17.0.12",
@@ -45,6 +47,7 @@
     "eslint": "8.7.0",
     "eslint-config-next": "12.0.8",
     "postcss": "^8.4.5",
+    "react-hook-form": "^7.28.0",
     "tailwindcss": "^3.0.16",
     "typescript": "4.5.5"
   }

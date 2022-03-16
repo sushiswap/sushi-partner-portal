@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useRef } from "react";
+import React, { createRef, useEffect } from "react";
 import ImageEditorImport from "@toast-ui/react-image-editor";
 
 export default function ImageEditor({ setInstance }) {
