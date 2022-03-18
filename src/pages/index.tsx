@@ -42,10 +42,11 @@ export default function Home() {
   });
   const { watch } = methods;
   const [chainId, setChainId] = useState<ChainId>(ChainId.ETHEREUM);
-  const [tokenAddress, logoId, logoUri] = watch([
+  const [tokenAddress, logoId, logoUri, background] = watch([
     "tokenAddress",
     "logoId",
     "logoUri",
+    "background",
   ]);
   const [editor, setEditor] = useState<any>();
 
@@ -91,19 +92,20 @@ export default function Home() {
     }
   };
 
+  const errors = [
+    tokenAddress && !tokenData?.symbol ? "Token not found" : undefined,
+    !logoId || !logoUri ? "No logo uploaded" : undefined,
+    !background ? "No background color provided" : undefined,
+  ].filter((el) => !!el);
+
   return (
-    <Container maxWidth="2xl">
+    <Container maxWidth="lg">
       <div className="flex flex-col gap-10">
         <Form {...methods} onSubmit={methods.handleSubmit(onSubmit)}>
-          <Form.Card>
+          <Form.Card className={submitState?.error ? "!border-red/40" : ""}>
             <Form.Section
               columns={6}
-              header={
-                <Form.Section.Header
-                  header="Generate your pull request"
-                  subheader="Provide your token address, the network your token is deployed on and the vector image of your logo to generate a pull request on our assets repository automatically"
-                />
-              }
+              header={<Form.Section.Header header="Submit your request" />}
             >
               <div className="col-span-6">
                 <Typography weight={700} className="mb-2">
@@ -116,7 +118,7 @@ export default function Home() {
                   name="tokenAddress"
                   label="Token address"
                   helperText={
-                    tokenData ? (
+                    tokenAddress && tokenData?.symbol ? (
                       <Form.HelperText className="!text-green">
                         Found token {tokenData.symbol} ({tokenData.decimals}{" "}
                         decimals)
@@ -124,6 +126,10 @@ export default function Home() {
                     ) : tokenDataLoading ? (
                       <Form.HelperText className="!text-green">
                         <Loader />
+                      </Form.HelperText>
+                    ) : tokenAddress ? (
+                      <Form.HelperText className="!text-red">
+                        Token not found
                       </Form.HelperText>
                     ) : (
                       "Please enter the address of your token"
@@ -156,14 +162,33 @@ export default function Home() {
               </div>
               <div className="col-span-6 flex justify-end">
                 <Button
+                  disabled={
+                    (tokenAddress && !tokenData?.symbol) ||
+                    !logoId ||
+                    !logoUri ||
+                    !background
+                  }
+                  loading={submitState.state === SubmitState.Loading}
                   variant="filled"
                   color="blue"
                   onClick={onSubmit}
                   type="button"
+                  fullWidth
                 >
-                  Submit
+                  {errors.length === 0 || errors.length > 1
+                    ? "Submit"
+                    : errors[0]}
                 </Button>
               </div>
+              {submitState?.error && (
+                <Typography
+                  weight={700}
+                  variant="sm"
+                  className="col-span-6 text-red text-center"
+                >
+                  {submitState?.error}
+                </Typography>
+              )}
               {submitState?.data && (
                 <div className="col-span-3 flex flex-col gap-5 p-4 border border-dark-800 bg-dark-1000/20 rounded">
                   <div className="flex flex-col gap-1">

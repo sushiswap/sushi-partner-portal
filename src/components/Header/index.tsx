@@ -4,15 +4,10 @@ import React from "react";
 
 import Container from "../Container";
 
-export const HEADER_HEIGHT = 64;
-
 function Header() {
   return (
-    <div
-      className="fixed z-20 hidden w-full lg:block"
-      style={{ height: HEADER_HEIGHT }}
-    >
-      <nav className="w-full h-full flex items-center">
+    <div className="z-20 w-full flex items-center">
+      <nav className="w-full h-full flex items-center h-[64px]">
         <Container maxWidth="7xl" className="mx-auto">
           <div className="flex items-center justify-between gap-4 px-6">
             <div className="flex items-center">
