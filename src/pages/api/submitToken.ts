@@ -45,8 +45,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   } = await octokit.request("GET /repos/{owner}/{repo}/branches/{branch}", {
     owner,
-    repo: "logos",
-    branch: "main",
+    repo: "list",
+    branch: "master",
   });
 
   const displayName = tokenData.symbol.toLowerCase().replace(/( )|(\.)/g, "_");
@@ -60,7 +60,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         "GET /repos/{owner}/{repo}/branches",
         {
           owner,
-          repo: "logos",
+          repo: "list",
           per_page: 100,
           page: i,
         }
@@ -89,12 +89,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Create new branch
   await octokit.request("POST /repos/{owner}/{repo}/git/refs", {
     owner,
-    repo: "logos",
+    repo: "list",
     ref: `refs/heads/${branch}`,
     sha: latestIconsSha,
   });
 
-  const imagePath = `network/${ChainKey[
+  const imagePath = `logos/token-logos/network/${ChainKey[
     ChainId[chainId]
   ].toLowerCase()}/${checksummedAddress}.jpg`;
 
@@ -102,7 +102,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Upload image
     await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
       owner,
-      repo: "logos",
+      repo: "list",
       branch: branch,
       path: imagePath,
       content: tokenIcon.split(",")[1],
@@ -113,40 +113,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  // Open icon PR
-  const {
-    data: { html_url: iconPr },
-  } = await octokit.request("POST /repos/{owner}/{repo}/pulls", {
-    owner,
-    repo: "logos",
-    title: `Icon: ${displayName}`,
-    head: branch,
-    base: "main",
-    body: `Name: ${tokenData.name}\nSymbol: ${tokenData.symbol}\nDecimals: ${tokenData.decimals}\nImage: https://github.com/${owner}/logos/tree/${branch}/${imagePath}`,
-  });
-
-  // SDK has "mainnet" as "ethereum"
-  const listPath = `tokens/${ChainKey[ChainId[chainId]]
-    .toLowerCase()
-    .replace("ethereum", "mainnet")}.json`;
-
-  // Get latest commit for the new branch
-  const {
-    data: {
-      commit: { sha: latestListSha },
-    },
-  } = await octokit.request("GET /repos/{owner}/{repo}/branches/{branch}", {
-    owner,
-    repo: "default-token-list",
-    branch: "master",
-  });
+  const listPath = `lists/token-lists/default-token-list/tokens/${ChainKey[
+    ChainId[chainId]
+  ].toLowerCase()}.json`;
 
   // Get current list to append to
   const { data: currentListData } = (await octokit.request(
     "GET /repos/{owner}/{repo}/contents/{path}",
     {
       owner,
-      repo: "default-token-list",
+      repo: "list",
       branch: "master",
       path: listPath,
     }
@@ -163,22 +139,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       symbol: tokenData.symbol,
       decimals: tokenData.decimals,
       chainId: chainId,
-      logoURI: `https://raw.githubusercontent.com/${owner}/logos/main/${imagePath}`,
+      logoURI: `https://raw.githubusercontent.com/${owner}/list/master/${imagePath}`,
     },
   ];
-
-  // Create new branch
-  await octokit.request("POST /repos/{owner}/{repo}/git/refs", {
-    owner,
-    repo: "default-token-list",
-    ref: `refs/heads/${branch}`,
-    sha: latestListSha,
-  });
 
   // Upload new list
   await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
     owner,
-    repo: "default-token-list",
+    repo: "list",
     branch: branch,
     path: listPath,
     content: Buffer.from(JSON.stringify(newList, null, 2)).toString("base64"),
@@ -191,14 +159,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     data: { html_url: listPr },
   } = await octokit.request("POST /repos/{owner}/{repo}/pulls", {
     owner,
-    repo: "default-token-list",
+    repo: "list",
     title: `Token: ${displayName}`,
     head: branch,
     base: "master",
-    body: `Name: ${tokenData.name}\nSymbol: ${tokenData.symbol}\nDecimals: ${tokenData.decimals}\nImage: https://github.com/${owner}/logos/tree/${branch}/${imagePath}\nImage PR: ${iconPr}`,
+    body: `Name: ${tokenData.name}\nSymbol: ${tokenData.symbol}\nDecimals: ${tokenData.decimals}\nImage: https://github.com/${owner}/list/tree/${branch}/${imagePath}\n![${displayName}](https://raw.githubusercontent.com/${owner}/list/${branch}/${imagePath})`,
   });
 
-  res.status(200).json({ iconPr, listPr });
+  res.status(200).json({ listPr });
 };
 
 export default handler;

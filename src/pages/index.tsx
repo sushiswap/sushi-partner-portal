@@ -52,7 +52,7 @@ export default function Home() {
 
   const [submitState, setSubmitState] = useState<{
     state: SubmitState;
-    data?: { iconPr: string; listPr: string };
+    data?: { listPr: string };
     error?: string;
   }>({ state: SubmitState.Nothing });
 
@@ -160,7 +160,7 @@ export default function Home() {
                   <ImageEditor setInstance={setEditor} />
                 </div>
               </div>
-              <div className="col-span-6 flex justify-end">
+              <div className="flex justify-end col-span-6">
                 <Button
                   disabled={
                     (tokenAddress && !tokenData?.symbol) ||
@@ -184,37 +184,20 @@ export default function Home() {
                 <Typography
                   weight={700}
                   variant="sm"
-                  className="col-span-6 text-red text-center"
+                  className="col-span-6 text-center text-red"
                 >
                   {submitState?.error}
                 </Typography>
               )}
               {submitState?.data && (
-                <div className="col-span-3 flex flex-col gap-5 p-4 border border-dark-800 bg-dark-1000/20 rounded">
-                  <div className="flex flex-col gap-1">
-                    <Typography variant="sm" weight={700}>
-                      Icon pull request
-                    </Typography>
-                    <Typography
-                      variant="sm"
-                      className="cursor-pointer text-blue-400 hover:text-blue-600"
-                    >
-                      <a
-                        target="_blank"
-                        rel="noreferrer"
-                        href={submitState.data?.iconPr}
-                      >
-                        https://github.com/sushiswap/sushi-partner-portal/settings/secrets/actions
-                      </a>
-                    </Typography>
-                  </div>
+                <div className="flex flex-col col-span-3 gap-5 p-4 border rounded border-dark-800 bg-dark-1000/20">
                   <div className="flex flex-col gap-1">
                     <Typography variant="sm" weight={700}>
                       List pull request
                     </Typography>
                     <Typography
                       variant="sm"
-                      className="cursor-pointer  text-blue-400 hover:text-blue-600"
+                      className="text-blue-400 cursor-pointer hover:text-blue-600"
                     >
                       <a
                         target="_blank"
