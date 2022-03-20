@@ -40,8 +40,8 @@ const UploadImageField: FC<UploadImageField> = ({ editor }) => {
             setValue("logoId", id);
           }),
         "base64",
-        86,
-        86
+        0,
+        0
       );
     },
     [editor, logoId, setValue]
