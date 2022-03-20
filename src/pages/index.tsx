@@ -204,7 +204,7 @@ export default function Home() {
                         rel="noreferrer"
                         href={submitState.data?.listPr}
                       >
-                        https://github.com/sushiswap/sushi-partner-portal/settings/secrets/actions
+                        {submitState.data?.listPr}
                       </a>
                     </Typography>
                   </div>
