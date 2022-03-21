@@ -8,6 +8,7 @@ import Loader from "app/components/Loader";
 import Typography from "app/components/Typography";
 import Web3Network from "app/components/Web3Network";
 import BackgroundImageMakerField from "app/features/BackgroundMaker/BackgroundMakerField";
+import SizeSlider from "app/features/SizeSlider";
 import UploadImageField from "app/features/UploadImageField";
 import { classNames } from "app/functions";
 import { addressValidator } from "app/functions/validators";
@@ -27,6 +28,8 @@ enum SubmitState {
 const schema = yup.object().shape({
   tokenAddress: addressValidator.required("Please enter a valid ERC20-address"),
   background: yup.string(),
+  imageSize: yup.number(),
+  imageFile: yup.string(),
 });
 
 interface FormType {
@@ -34,19 +37,25 @@ interface FormType {
   background: string;
   logoId: string;
   logoUri: string;
+  imageSize: number;
+  imageFile: string;
 }
 
 export default function Home() {
   const methods = useForm<FormType>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      imageSize: 86,
+    },
   });
   const { watch } = methods;
   const [chainId, setChainId] = useState<ChainId>(ChainId.ETHEREUM);
-  const [tokenAddress, logoId, logoUri, background] = watch([
+  const [tokenAddress, logoId, logoUri, background, imageFile] = watch([
     "tokenAddress",
     "logoId",
     "logoUri",
     "background",
+    "imageFile",
   ]);
   const [editor, setEditor] = useState<any>();
 
@@ -149,6 +158,11 @@ export default function Home() {
               <div className="col-span-6">
                 <BackgroundImageMakerField editor={editor} />
               </div>
+              {imageFile && (
+                <div className="col-span-6">
+                  <SizeSlider editor={editor} />
+                </div>
+              )}
               <div
                 className={classNames(
                   "col-span-6",

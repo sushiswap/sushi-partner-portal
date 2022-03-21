@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { HuePicker } from "react-color";
+import { HexColorPicker } from "react-colorful";
 import { useFormContext } from "react-hook-form";
+import useDebouncy from "use-debouncy/lib/effect";
 
 function adjust(color: string, amount: number) {
   return (
@@ -22,6 +23,8 @@ export default function BackgroundMaker({ editor, onBgSet }) {
 
   const canvasRef = useRef<HTMLCanvasElement>();
   const [color, setColor] = useState<string>();
+
+  useDebouncy(() => setValue("background", color), 200, [color]);
 
   useEffect(() => {
     if (canvasRef.current && color) {
@@ -48,13 +51,8 @@ export default function BackgroundMaker({ editor, onBgSet }) {
   }, [colorValue]);
 
   return (
-    <div className="flex px-1 w-full">
-      <HuePicker
-        width="100%"
-        color={color}
-        onChange={(color) => setColor(color.hex)}
-        onChangeComplete={(color) => setValue("background", color.hex)}
-      />
+    <div className="flex px-1 w-full relative">
+      <HexColorPicker color={color} onChange={setColor} />
       <canvas ref={canvasRef} height={128} width={128} className="hidden" />
     </div>
   );

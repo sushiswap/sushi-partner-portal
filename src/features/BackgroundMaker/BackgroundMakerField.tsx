@@ -24,23 +24,21 @@ const BackgroundImageMakerField: FC<BackgroundImageMakerField> = ({
   }, [editor, logoUri, setValue]);
 
   return (
-    <>
-      <div className="flex flex-col">
-        <Typography weight={700}>Background color</Typography>
-        <div className="flex gap-4">
-          <div className="flex flex-col flex-grow mt-3 gap-2">
-            <BackgroundMaker editor={editor} onBgSet={onBgSet} />
-            <div>
-              <Form.TextField
-                name="background"
-                helperText="Enter background color in hex value"
-                placeholder="#AABBCC"
-              />
-            </div>
+    <div className="flex flex-col">
+      <Typography weight={700}>Background color</Typography>
+      <div className="flex gap-4">
+        <div className="flex flex-col flex-grow mt-3 gap-2">
+          <BackgroundMaker editor={editor} onBgSet={onBgSet} />
+          <div>
+            <Form.TextField
+              name="background"
+              helperText="Enter background color in hex value"
+              placeholder="#AABBCC"
+            />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

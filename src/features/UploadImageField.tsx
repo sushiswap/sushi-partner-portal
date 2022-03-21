@@ -16,7 +16,7 @@ interface UploadImageField {
 
 const UploadImageField: FC<UploadImageField> = ({ editor }) => {
   const { register, watch, setValue } = useFormContext();
-  const [logoId] = watch(["logoId"]);
+  const [logoId, imageSize] = watch(["logoId", "imageSize"]);
 
   const onDrop = useCallback(
     async (acceptedFiles) => {
@@ -29,8 +29,8 @@ const UploadImageField: FC<UploadImageField> = ({ editor }) => {
 
       Resizer.imageFileResizer(
         acceptedFiles[0],
-        86,
-        86,
+        imageSize,
+        imageSize,
         "PNG",
         100,
         0,
@@ -43,8 +43,10 @@ const UploadImageField: FC<UploadImageField> = ({ editor }) => {
         0,
         0
       );
+
+      setValue("imageFile", acceptedFiles[0]);
     },
-    [editor, logoId, setValue]
+    [editor, imageSize, logoId, setValue]
   );
 
   const { getRootProps, getInputProps, isDragActive, isDragReject } =

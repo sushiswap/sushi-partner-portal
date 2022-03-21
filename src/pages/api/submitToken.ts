@@ -108,8 +108,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       content: tokenIcon.split(",")[1],
       message: `Upload ${displayName} icon`,
     });
-  } catch {
-    res.status(500).json({ error: "Token image already exists." });
+  } catch (e) {
+    // @ts-ignore
+    res.status(500).json({ error: e.message });
     return;
   }
 
