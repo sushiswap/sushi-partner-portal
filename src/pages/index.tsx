@@ -170,7 +170,7 @@ export default function Home() {
                 )}
               >
                 <Typography weight={700}>Preview</Typography>
-                <div className="mt-2 w-[200px] flex">
+                <div className="mt-2 w-[128px] flex">
                   <div className="flex w-[128px] h-[128px] rounded overflow-hidden">
                     <ImageEditor setInstance={setEditor} />
                   </div>
