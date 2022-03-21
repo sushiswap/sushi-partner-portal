@@ -109,8 +109,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       message: `Upload ${displayName} icon`,
     });
   } catch (e) {
-    // @ts-ignore
-    res.status(500).json({ error: e.message });
+    res.status(500).json({ error: "Token already added to the list" });
     return;
   }
 

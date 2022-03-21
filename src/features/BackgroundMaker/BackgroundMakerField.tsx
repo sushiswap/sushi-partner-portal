@@ -34,6 +34,7 @@ const BackgroundImageMakerField: FC<BackgroundImageMakerField> = ({
               name="background"
               helperText="Enter background color in hex value"
               placeholder="#AABBCC"
+              className="max-w-[204px]"
             />
           </div>
         </div>

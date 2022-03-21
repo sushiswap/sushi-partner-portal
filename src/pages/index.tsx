@@ -155,23 +155,25 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="col-span-6">
-                <BackgroundImageMakerField editor={editor} />
-              </div>
               {imageFile && (
                 <div className="col-span-6">
                   <SizeSlider editor={editor} />
                 </div>
               )}
+              <div className="col-span-3">
+                <BackgroundImageMakerField editor={editor} />
+              </div>
               <div
                 className={classNames(
-                  "col-span-6",
+                  "col-span-3 border-l border-dark-800 pl-7",
                   !(logoId || logoUri) ? "hidden" : "block"
                 )}
               >
                 <Typography weight={700}>Preview</Typography>
-                <div className="mt-2 flex w-[128px] h-[128px] rounded overflow-hidden">
-                  <ImageEditor setInstance={setEditor} />
+                <div className="mt-2 w-[200px] flex">
+                  <div className="flex w-[128px] h-[128px] rounded overflow-hidden">
+                    <ImageEditor setInstance={setEditor} />
+                  </div>
                 </div>
               </div>
               <div className="flex justify-end col-span-6">
