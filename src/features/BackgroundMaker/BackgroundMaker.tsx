@@ -51,7 +51,7 @@ export default function BackgroundMaker({ editor, onBgSet }) {
   }, [colorValue]);
 
   return (
-    <div className="flex px-1 w-full relative">
+    <div className="relative flex w-full px-1">
       <HexColorPicker color={color} onChange={setColor} />
       <canvas ref={canvasRef} height={128} width={128} className="hidden" />
     </div>
