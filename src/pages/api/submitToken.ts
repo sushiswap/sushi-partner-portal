@@ -194,6 +194,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     `,
   });
 
+  // Send Discord notification using webhook
+  await fetch(process.env.LIST_PR_WEBHOOK_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      content: null,
+      embeds: [
+        {
+          description: "New pull request",
+          color: 5814783,
+          author: {
+            name: `${tokenData.name} - ${ChainId[chainId]}`,
+            url: listPr,
+            icon_url: `https://raw.githubusercontent.com/${owner}/list/${branch}/${imagePath}`,
+          },
+        },
+      ],
+      username: "GitHub List Repo",
+      avatar_url:
+        "https://banner2.cleanpng.com/20180824/jtl/kisspng-computer-icons-logo-portable-network-graphics-clip-icons-for-free-iconza-circle-social-5b7fe46b0bac53.1999041115351082030478.jpg",
+    }),
+    headers: { "Content-Type": "application/json" },
+  });
+
   res.status(200).json({ listPr });
 };
 
