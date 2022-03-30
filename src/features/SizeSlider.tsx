@@ -52,6 +52,8 @@ const SizeSlider: FC<SizeSliderProps> = ({ editor }) => {
           <Slider
             min={48}
             max={128}
+            /* @ts-ignore */
+            defaultValue={86}
             markFormatter={(val) => `${val}`}
             onChange={setImage}
           />

@@ -30,6 +30,7 @@ const schema = yup.object().shape({
   background: yup.string(),
   imageSize: yup.number(),
   imageFile: yup.string(),
+  listType: yup.string(),
 });
 
 interface FormType {
@@ -39,6 +40,7 @@ interface FormType {
   logoUri: string;
   imageSize: number;
   imageFile: string;
+  listType: "default-token-list" | "community-token-list";
 }
 
 export default function Home() {
@@ -46,17 +48,20 @@ export default function Home() {
     resolver: yupResolver(schema),
     defaultValues: {
       imageSize: 86,
+      listType: "default-token-list",
     },
   });
   const { watch } = methods;
   const [chainId, setChainId] = useState<ChainId>(ChainId.ETHEREUM);
-  const [tokenAddress, logoId, logoUri, background, imageFile] = watch([
-    "tokenAddress",
-    "logoId",
-    "logoUri",
-    "background",
-    "imageFile",
-  ]);
+  const [tokenAddress, logoId, logoUri, background, imageFile, listType] =
+    watch([
+      "tokenAddress",
+      "logoId",
+      "logoUri",
+      "background",
+      "imageFile",
+      "listType",
+    ]);
   const [editor, setEditor] = useState<any>();
 
   const [submitState, setSubmitState] = useState<{
@@ -84,6 +89,7 @@ export default function Home() {
         tokenData,
         tokenIcon: editor?.toDataURL(),
         chainId,
+        listType,
       }),
     });
 
@@ -110,7 +116,7 @@ export default function Home() {
   return (
     <Container maxWidth="lg">
       <div className="flex flex-col gap-10">
-        <Form {...methods} onSubmit={methods.handleSubmit(onSubmit)}>
+        <Form {...methods} onSubmit={() => {}}>
           <Form.Card className={submitState?.error ? "!border-red/40" : ""}>
             <Form.Section
               columns={6}
@@ -175,6 +181,32 @@ export default function Home() {
                     <ImageEditor setInstance={setEditor} />
                   </div>
                 </div>
+              </div>
+              <div className="flex col-span-6">
+                <Button
+                  fullWidth
+                  className={classNames(
+                    "rounded-r-none",
+                    listType !== "default-token-list" && "opacity-40"
+                  )}
+                  onClick={() =>
+                    methods.setValue("listType", "default-token-list")
+                  }
+                >
+                  Default List
+                </Button>
+                <Button
+                  fullWidth
+                  className={classNames(
+                    "rounded-l-none",
+                    listType !== "community-token-list" && "opacity-40"
+                  )}
+                  onClick={() =>
+                    methods.setValue("listType", "community-token-list")
+                  }
+                >
+                  Community List
+                </Button>
               </div>
               <div className="flex justify-end col-span-6">
                 <Button

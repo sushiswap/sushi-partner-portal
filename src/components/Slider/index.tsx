@@ -20,7 +20,7 @@ const Thumb = (props: any) => {
   return (
     <div key={props.key}>
       <div
-        className="absolute h-4 flex items-center justify-center w-4 -ml-2 top-0"
+        className="absolute top-0 flex items-center justify-center w-4 h-4 -ml-2"
         style={{ left: props.style.left }}
       >
         <div className="z-40 min-w-full">
@@ -35,7 +35,7 @@ const Thumb = (props: any) => {
                 {props["aria-valuenow"]}
               </div>
               <svg
-                className="absolute ml-2 text-blue w-full h-2 left-0 top-100"
+                className="absolute left-0 w-full h-2 ml-2 text-blue top-100"
                 x="0px"
                 y="0px"
                 viewBox="0 0 255 255"
@@ -52,7 +52,7 @@ const Thumb = (props: any) => {
       </div>
       <div
         {...props}
-        className="-mt-1 h-4 w-4 rounded-full bg-blue cursor-pointer outline-none"
+        className="w-4 h-4 -mt-1 rounded-full outline-none cursor-pointer bg-blue"
       />
     </div>
   );

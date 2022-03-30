@@ -10,17 +10,20 @@ interface Body {
   tokenData: TokenData;
   tokenIcon: string;
   chainId: ChainId;
+  listType: "default-token-list" | "community-token-list";
 }
 
 const owner = "sushiswap";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { tokenAddress, tokenData, tokenIcon, chainId } = req.body as Body;
+  const { tokenAddress, tokenData, tokenIcon, chainId, listType } =
+    req.body as Body;
   if (
     !tokenData?.decimals ||
     !tokenData.name ||
     !tokenData.symbol ||
     !tokenIcon ||
+    !listType ||
     !chainId
   ) {
     res.status(500).json({ error: "Invalid data submitted." });
@@ -129,24 +132,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  const listPath = `lists/token-lists/default-token-list/tokens/${ChainKey[
+  const listPath = `lists/token-lists/${listType}/tokens/${ChainKey[
     ChainId[chainId]
   ].toLowerCase()}.json`;
 
   // Get current token list to append to
-  const { data: currentListData } = (await octokit.request(
-    "GET /repos/{owner}/{repo}/contents/{path}",
-    {
-      owner,
-      repo: "list",
-      branch: "master",
-      path: listPath,
-    }
-  )) as any;
+  let currentListData: { sha: string; content: any } | undefined;
 
-  const currentList = JSON.parse(
-    Buffer.from(currentListData.content, "base64").toString("ascii")
-  );
+  try {
+    ({ data: currentListData } = (await octokit.request(
+      "GET /repos/{owner}/{repo}/contents/{path}",
+      {
+        owner,
+        repo: "list",
+        branch: "master",
+        path: listPath,
+      }
+    )) as any);
+  } catch {}
+
+  const currentList = currentListData
+    ? JSON.parse(
+        Buffer.from(currentListData?.content, "base64").toString("ascii")
+      )
+    : [];
 
   // No need to update token list when entry already exists
   // For cases when only updating the image
@@ -172,7 +181,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       path: listPath,
       content: Buffer.from(JSON.stringify(newList, null, 2)).toString("base64"),
       message: `Add ${displayName} on ${ChainId[chainId].toLowerCase()}`,
-      sha: currentListData.sha,
+      sha: currentListData?.sha,
     });
   }
 
