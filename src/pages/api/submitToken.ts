@@ -2,6 +2,7 @@ import { createAppAuth } from "@octokit/auth-app";
 import { ChainId, ChainKey } from "@sushiswap/core-sdk";
 import { TokenData } from "app/hooks/useTokenData";
 import { ethers } from "ethers";
+import { gql, request } from "graphql-request";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Octokit } from "octokit";
 
@@ -185,6 +186,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
+  const exchangeData = await getExchangeData(chainId, tokenAddress);
+
   // Open List PR
   const {
     data: { html_url: listPr },
@@ -197,6 +200,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     body: `Name: ${tokenData.name}
       Symbol: ${tokenData.symbol}
       Decimals: ${tokenData.decimals}
+      Volume: $${exchangeData.volumeUSD.toFixed(2)}
+      Liquidity: $${exchangeData.liquidityUSD.toFixed(2)}
       CoinGecko: ${await getCoinGecko(chainId, checksummedAddress)}
       Image: https://github.com/${owner}/list/tree/${branch}/${imagePath}
       ![${displayName}](https://raw.githubusercontent.com/${owner}/list/${branch}/${imagePath})
@@ -241,4 +246,71 @@ async function getCoinGecko(chainId: ChainId, address: string) {
     .then((data) =>
       data.id ? `https://www.coingecko.com/en/coins/${data.id}` : "Not Found"
     );
+}
+
+export const exchangeSubgraph: any = {
+  [ChainId.ARBITRUM]:
+    "https://api.thegraph.com/subgraphs/name/sushiswap/arbitrum-exchange",
+  [ChainId.AVALANCHE]:
+    "https://api.thegraph.com/subgraphs/name/sushiswap/avalanche-exchange",
+  [ChainId.BSC]:
+    "https://api.thegraph.com/subgraphs/name/sushiswap/bsc-exchange",
+  [ChainId.CELO]:
+    "https://api.thegraph.com/subgraphs/name/sushiswap/celo-exchange",
+  [ChainId.FANTOM]:
+    "https://api.thegraph.com/subgraphs/name/sushiswap/fantom-exchange",
+  [ChainId.HARMONY]:
+    "https://sushi.graph.t.hmny.io/subgraphs/name/sushiswap/harmony-exchange",
+  [ChainId.HECO]: "https://q.hg.network/subgraphs/name/heco-exchange/heco",
+  [ChainId.ETHEREUM]:
+    "https://api.thegraph.com/subgraphs/name/sushiswap/exchange",
+  [ChainId.MATIC]:
+    "https://api.thegraph.com/subgraphs/name/sushiswap/matic-exchange",
+  [ChainId.OKEX]: "https://n19.hg.network/subgraphs/name/okex-exchange/oec",
+  [ChainId.XDAI]:
+    "https://api.thegraph.com/subgraphs/name/sushiswap/xdai-exchange",
+  [ChainId.MOONRIVER]:
+    "https://api.thegraph.com/subgraphs/name/sushiswap/moonriver-exchange",
+  [ChainId.FUSE]:
+    "https://api.thegraph.com/subgraphs/name/sushiswap/fuse-exchange",
+};
+
+async function getExchangeData(chainId: ChainId, address: string) {
+  try {
+    const { token } = await request(
+      exchangeSubgraph[chainId],
+      gql`
+        query exchangeData($token: String!) {
+          token(id: $token) {
+            derivedETH
+            liquidity
+            volumeUSD
+          }
+        }
+      `,
+      { token: address.toLowerCase() }
+    );
+
+    const { bundles } = await request(
+      exchangeSubgraph[chainId],
+      gql`
+        query bundle {
+          bundles(first: 1) {
+            ethPrice
+          }
+        }
+      `,
+      { token: address.toLowerCase() }
+    );
+
+    return {
+      liquidityUSD: token.liquidity * token.derivedETH * bundles[0].ethPrice,
+      volumeUSD: Number(token.volumeUSD),
+    };
+  } catch {
+    return {
+      liquidityUSD: 0,
+      volumeUSD: 0,
+    };
+  }
 }
