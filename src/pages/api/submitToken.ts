@@ -200,6 +200,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     body: `Name: ${tokenData.name}
       Symbol: ${tokenData.symbol}
       Decimals: ${tokenData.decimals}
+      List: ${listType}
       Volume: $${exchangeData.volumeUSD.toFixed(2)}
       Liquidity: $${exchangeData.liquidityUSD.toFixed(2)}
       CoinGecko: ${await getCoinGecko(chainId, checksummedAddress)}
