@@ -165,14 +165,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const newList = [
       ...currentList,
       {
-        name: tokenData.name,
         address: checksummedAddress,
-        symbol: tokenData.symbol,
-        decimals: tokenData.decimals,
         chainId: chainId,
+        decimals: tokenData.decimals,
         logoURI: `https://raw.githubusercontent.com/${owner}/list/master/${imagePath}`,
+        name: tokenData.name,
+        symbol: tokenData.symbol,
       },
-    ];
+    ].sort((a, b) => a.symbol.localeCompare(b.symbol));
 
     // Upload new list
     await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
