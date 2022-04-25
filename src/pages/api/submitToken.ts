@@ -152,39 +152,40 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )) as any);
   } catch {}
 
-  const currentList = currentListData
+  let currentList = currentListData
     ? JSON.parse(
         Buffer.from(currentListData?.content, "base64").toString("ascii")
       )
     : [];
 
-  // No need to update token list when entry already exists
-  // For cases when only updating the image
-  if (!currentList.find((entry) => entry.address === checksummedAddress)) {
-    // Append to current list
-    const newList = [
-      ...currentList,
-      {
-        address: checksummedAddress,
-        chainId: chainId,
-        decimals: tokenData.decimals,
-        logoURI: `https://raw.githubusercontent.com/${owner}/list/master/${imagePath}`,
-        name: tokenData.name,
-        symbol: tokenData.symbol,
-      },
-    ].sort((a, b) => a.symbol.localeCompare(b.symbol));
+  // Remove from current list if exists to overwrite later
+  currentList = currentList.filter(
+    (entry) => entry.address !== checksummedAddress
+  );
 
-    // Upload new list
-    await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
-      owner,
-      repo: "list",
-      branch: branch,
-      path: listPath,
-      content: Buffer.from(JSON.stringify(newList, null, 2)).toString("base64"),
-      message: `Add ${displayName} on ${ChainId[chainId].toLowerCase()}`,
-      sha: currentListData?.sha,
-    });
-  }
+  // Append to current list
+  const newList = [
+    ...currentList,
+    {
+      address: checksummedAddress,
+      chainId: chainId,
+      decimals: tokenData.decimals,
+      logoURI: `https://raw.githubusercontent.com/${owner}/list/master/${imagePath}`,
+      name: tokenData.name,
+      symbol: tokenData.symbol,
+    },
+  ].sort((a, b) => a.symbol.localeCompare(b.symbol));
+
+  // Upload new list
+  await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
+    owner,
+    repo: "list",
+    branch: branch,
+    path: listPath,
+    content: Buffer.from(JSON.stringify(newList, null, 2)).toString("base64"),
+    message: `Add ${displayName} on ${ChainId[chainId].toLowerCase()}`,
+    sha: currentListData?.sha,
+  });
 
   const exchangeData = await getExchangeData(chainId, tokenAddress);
 
